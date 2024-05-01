@@ -16,7 +16,7 @@ Pacn = Pace';     % array containing the coefficients of Pacejka tyre model
 
 %% Constants
 
-velstart = 3; 
+velstart = 22; 
 Rho = 0.27; % aerodynamic drag coefficient of car
 Cx = 1;
 Ir = 1.46; % Reasonable moment of inertia for wheel, weighing approximately 12kg
