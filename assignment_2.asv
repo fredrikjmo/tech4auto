@@ -1,0 +1,67 @@
+%% TAV module
+close all; clc; clear all; 
+warning off
+
+% Load tyre data (Pacejka model coefficients)
+% File with the tyre data
+WheelFile = 'Tyre215_50_19_Comb';      
+% Wheel Initialization
+pacn = [];
+eval(['[Pacejka]=' WheelFile ';'])
+pacn = struct2cell(Pacejka);
+for ii = 1:size(pacn)
+    Pace(ii) = pacn{ii};
+end
+Pacn = Pace';     % array containing the coefficients of Pacejka tyre model
+
+%% Constants
+
+velstart = 22; 
+Rho = 0.27; % aerodynamic drag coefficient of car
+Cx = 1;
+Ir = 1.46; % Reasonable moment of inertia for wheel, weighing approximately 12kg
+Af = 2.37; % Vehicle frontal area
+f0 = 0.009; % Rolling resistance
+f2 = 6.5*10^(-6); % Rolling resistance wheel to be multiplied by speed
+
+b_f = 0.75; % Front break percentage
+b_r = 1-b_f; % Rear break percentage
+
+tau_b = 20*10^(-3); % Generation deadtime of the friction brakes [s]
+rise_b = 25*10^(-3); % Rise time for friction brakes (time constant) [s]
+
+R = 0.3488; % Wheel radius
+bat_cap = 58000; % Maximum battery capacity [Wh]
+bat_per = 1; % Percentage charge of battery [0-1]
+bat_volt = 800 % []
+
+%% Vehicle dynamics constants
+g = 9.81; % Gravity constant
+L = 2.77; % Distance between front and rear wheels [m]
+h = 0.55; % Height of mass centre from ground [m]
+m = 1812; % Mass of car [kg]
+a = 0.5*L;
+b = 0.5*L;
+alpha_slope = 0; % Slope of ground [rad]
+
+%% Motor and drivetrain
+
+P_max = 150000;  % Watts
+T_max = 310;  % Newton-meter
+omega_max_rpm = 16000; %
+omega_max_rad = omega_max_rpm * (2 * pi / 60);  % Convert rpm to rad/s
+
+% Motor constants (estimating K_t = K_e)
+K_t = T_max / omega_max_rad;  % Nm/A or V/(rad/s)
+K_e = K_t;
+
+% Current at maximum torque
+i_max = T_max / K_t;  % Ampere
+
+% Back EMF at maximum speed
+E_max = K_t * omega_max_rad;  % Volt
+
+drivetrain_gain = 10.5;
+motor_eff = 0.9;
+trans_eff = 0.95;
+tors_stiff = 9000; % [Nm/rad]
