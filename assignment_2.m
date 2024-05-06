@@ -13,12 +13,13 @@ end
 Pacn = Pace'; % array containing the coefficients of Pacejka tyre model
 
 %% Constants for Vehicle Physical Parameters
-velstart = 20;
+velstart = 23; % [m/s]
 
 m = 1812; % Mass of car [kg]
 Rho = 0.27; % Aerodynamic drag coefficient of car
 Cx = 1;
 Af = 2.37; % Vehicle frontal area [m^2]
+mu = 0.5; % Tyre friction coefficient
 Ir = 1.46; % Moment of inertia for wheel, approx. 12kg [kg*m^2]
 R = 0.3488; % Wheel radius [m]
 f0 = 0.009; % Rolling resistance coefficient
